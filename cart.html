@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart and Payment</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .cart-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        .cart-item {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item h3 {
+            margin: 0;
+            color: #333;
+        }
+        .cart-item p {
+            margin: 0;
+            color: #777;
+        }
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .payment-option {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .payment-option:hover {
+            background-color: #f9f9f9;
+        }
+        .payment-form {
+            display: none;
+            margin-top: 20px;
+        }
+        .payment-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+        }
+        .modal-content h3 {
+            margin-bottom: 15px;
+        }
+        .modal-content button {
+            background-color: #007bff;
+        }
+        .modal-content button:hover {
+            background-color: #0069d9;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h2>Your Cart</h2>
+        <div id="cart-items"></div>
+        <div class="payment-options">
+            <div class="payment-option" onclick="showPaymentForm('card')">Credit/Debit Card</div>
+            <div class="payment-option" onclick="showPaymentForm('upi')">UPI Payment</div>
+            <div class="payment-option" onclick="processPayment('cod')">Cash on Delivery</div>
+        </div>
+        <div id="card-form" class="payment-form">
+            <input type="text" placeholder="Card Number" required>
+            <input type="text" placeholder="Name on Card" required>
+            <input type="text" placeholder="Expiry Date (MM/YY)" required>
+            <input type="text" placeholder="CVV" required>
+            <button onclick="processPayment('card')">Pay Now</button>
+        </div>
+        <div id="upi-form" class="payment-form">
+            <input type="text" placeholder="UPI ID" required>
+            <button onclick="processPayment('upi')">Pay Now</button>
+        </div>
+    </div>
+
+    <!-- Custom Modal for payment confirmation -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h3>Payment Confirmation</h3>
+            <p id="payment-message"></p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartItem = JSON.parse(localStorage.getItem('cartItem'));
+            if (cartItem) {
+                const cartItemsDiv = document.getElementById('cart-items');
+                const total = cartItem.price * cartItem.quantity;
+                cartItemsDiv.innerHTML = `
+                    <div class="cart-item">
+                        <h3>${cartItem.name}</h3>
+                        <p>Price: ₹${cartItem.price}</p>
+                        <p>Quantity: ${cartItem.quantity}</p>
+                        <p>Total: ₹${total}</p>
+                    </div>
+                `;
+            }
+        });
+
+        function showPaymentForm(type) {
+            document.getElementById('card-form').style.display = 'none';
+            document.getElementById('upi-form').style.display = 'none';
+            if (type === 'card' || type === 'upi') {
+                document.getElementById(`${type}-form`).style.display = 'block';
+            }
+        }
+
+        function processPayment(method) {
+            const cartItem = JSON.parse(localStorage.getItem('cartItem'));
+            const total = cartItem.price * cartItem.quantity;
+            let message = '';
+            switch(method) {
+                case 'card':
+                    message = `Processing Credit/Debit Card payment for ${cartItem.name}. Total: ₹${total}`;
+                    break;
+                case 'upi':
+                    message = `Processing UPI payment for ${cartItem.name}. Total: ₹${total}`;
+                    break;
+                case 'cod':
+                    message = `Order placed with Cash on Delivery for ${cartItem.name}. Total: ₹${total}`;
+                    break;
+            }
+            // Display the modal
+            showModal(message);
+            localStorage.removeItem('cartItem');
+        }
+
+        function showModal(message) {
+            const modal = document.getElementById('payment-modal');
+            const messageElement = document.getElementById('payment-message');
+            messageElement.innerText = message;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('payment-modal');
+            modal.style.display = 'none';
+            // Redirect after closing modal (optional)
+            //window.location.href = 'products.html';
+        }
+    </script>
+</body>
+</html>

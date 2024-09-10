@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header {
+            background-color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-item h3 {
+            margin: 15px 0;
+            font-size: 1.4em;
+            color: #333;
+        }
+
+        .product-item p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .product-item p.price {
+            font-size: 1.3em;
+            color: #444;
+            font-weight: bold;
+        }
+
+        .product-item button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-item button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #333;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .quantity {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .quantity input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .product-item h3 {
+                font-size: 1.2em;
+            }
+
+            .product-item p {
+                font-size: 1em;
+            }
+
+            .product-item p.price {
+                font-size: 1.1em;
+            }
+
+            .product-item button {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Our Products</h1>
+    </div>
+
+    <div class="product-container">
+        <h2>Explore Our Collection</h2>
+        <div class="product-grid">
+            <div class="product-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ0eAmKFHTYW1oepfxkrVO-vMZf1W1fzGZbw&s" alt="Stylish Watch">
+                <h3>Stylish Watch</h3>
+                <p class="price">₹1999</p>
+                <div class="quantity">
+                    <label for="quantity1">Quantity: </label>
+                    <input type="number" id="quantity1" min="1" value="1">
+                </div>
+                <button onclick="addToCart('Stylish Watch', 1999, document.getElementById('quantity1').value)">Add to Cart</button>
+            </div>
+            <div class="product-item">
+                <img src="https://www.boat-lifestyle.com/cdn/shop/files/Artboard1_0684daf7-e7d9-4224-9724-07271a45c73a.png?v=1698315950" alt="Wireless Earbuds">
+                <h3>Wireless Earbuds</h3>
+                <p class="price">₹2499</p>
+                <div class="quantity">
+                    <label for="quantity2">Quantity: </label>
+                    <input type="number" id="quantity2" min="1" value="1">
+                </div>
+                <button onclick="addToCart('Wireless Earbuds', 2499, document.getElementById('quantity2').value)">Add to Cart</button>
+            </div>
+            <div class="product-item">
+                <img src="https://5.imimg.com/data5/OF/GH/MY-7610375/handmade-men-s-short-leather-wallet.jpg" alt="Leather Wallet">
+                <h3>Leather Wallet</h3>
+                <p class="price">₹899</p>
+                <div class="quantity">
+                    <label for="quantity3">Quantity: </label>
+                    <input type="number" id="quantity3" min="1" value="1">
+                </div>
+                <button onclick="addToCart('Leather Wallet', 899, document.getElementById('quantity3').value)">Add to Cart</button>
+            </div>
+            <div class="product-item">
+                <img src="https://static5.lenskart.com/media/catalog/product/pro/1/thumbnail/480x480/9df78eab33525d08d6e5fb8d27136e95//v/i/gold-black-grey-gradient-full-rim-cat-eye-vincent-chase-polarized-vintage-vc-s11759-c3-sunglasses_g_4992_6_07_22.jpg" alt="Sunglasses">
+                <h3>Sunglasses</h3>
+                <p class="price">₹1499</p>
+                <div class="quantity">
+                    <label for="quantity4">Quantity: </label>
+                    <input type="number" id="quantity4" min="1" value="1">
+                </div>
+                <button onclick="addToCart('Sunglasses', 1499, document.getElementById('quantity4').value)">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Your Brand. All rights reserved.</p>
+    </div>
+
+    <script>
+        function addToCart(productName, price, quantity) {
+            localStorage.setItem('cartItem', JSON.stringify({ name: productName, price: price, quantity: quantity }));
+            window.location.href = 'cart.html';
+        }
+    </script>
+
+</body>
+
+</html>
